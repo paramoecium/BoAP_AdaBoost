@@ -1,8 +1,10 @@
-function featureVector = feature_extraction(img_path)
+function featureVector = feature_extraction(img)
 % function to perform feature extraction
 
 featureVector = [];
-img = imread(img_path);
+if size(img,3) == 1
+    img = cat(3, img, img, img);
+end
 
 % disp('bag of r feature extraction')
 img_r = img(:,:,1);%0:255

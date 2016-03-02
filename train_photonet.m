@@ -14,9 +14,10 @@ fileNum_train = size(filenames_train,2);
 train_data = zeros(fileNum_train, dim);
 for n = 1:fileNum_train
     disp(n)
-    train_data(n,:) = feature_extraction(filenames_train{n});
+    img = imread(filenames_train{n});
+    train_data(n,:) = feature_extraction(img);
 end
-save([working_dir 'data/train.mat'], 'train_data', 'train_label');
+save([working_dir 'data/Photonet_dataset/train.mat'], 'train_data', 'train_label');
 
 filename_cell_test_pos = struct2cell(rdir('/tmp3/yuchen/software_code_shao-yi/Photonet/Test/Good/*.jpg'));
 filename_cell_test_neg = struct2cell(rdir('/tmp3/yuchen/software_code_shao-yi/Photonet/Test/Bad/*.jpg'));
@@ -26,14 +27,15 @@ fileNum_test = size(filenames_test,2);
 test_data = zeros(fileNum_test, dim);
 for n = 1:fileNum_test
     disp(n)
-    test_data(n,:) = feature_extraction(filenames_test{n});
+    img = imread(filenames_test{n});
+    test_data(n,:) = feature_extraction(img);
 end
-save([working_dir 'data/test.mat'], 'test_data', 'test_label');
+save([working_dir 'data/Photonet_dataset/test.mat'], 'test_data', 'test_label');
 %% ====== training AdaBoost ======
 [classestimate, model, confidence]=adaboost('train', train_data, train_label, 200);
-save([working_dir 'data/model.mat'], 'model');
+save([working_dir 'data/Photonet_dataset/model.mat'], 'model');
 %% ====== testing AdaBoost ======
-load([working_dir 'data/model.mat'], 'model');
+load([working_dir 'data/Photonet_dataset/model.mat'], 'model');
 [pred_label, test_label2, confidence] = adaboost('apply', test_data, model);
 % model dimension distribution
 modeldim_distribution = [];
