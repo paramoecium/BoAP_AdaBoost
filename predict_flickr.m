@@ -18,10 +18,10 @@ for i=1:1
     lt_test = x(i);
     rt_test = x(i)+w(i);
 
-    bounding_boxes = auto_crop(bigImg,model);
-    [max_confidence, row_id] = max(bounding_boxes(:,1));
-    best_bounding_box = num2cell(bounding_boxes(row_id,2:5));
-    [up_pred, dn_pred, lt_pred, rt_pred] = deal(best_bounding_box{:});
+    tic
+    bounding_box = num2cell( auto_crop(bigImg,model) );
+    toc
+    [up_pred, dn_pred, lt_pred, rt_pred] = deal(bounding_box{:});
     if up_test>dn_pred || dn_test<up_pred || lt_test>rt_pred || rt_test<lt_pred
         area_inter = 0;
     else
